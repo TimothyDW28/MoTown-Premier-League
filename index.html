@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CSV Display</title>
+  <!-- Load DataTables CSS & JS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  <!-- Load PapaParse for CSV parsing -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+</head>
+<body>
+  <h1>My CSV Data</h1>
+  <table id="csvTable" class="display">
+    <thead></thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    // Fetch CSV from GitHub and display as a table
+    const csvUrl = 'https://raw.githubusercontent.com/TimothyDW28/csv-website/main/test2025-2026.csv';
+    
+    fetch(csvUrl)
+      .then(response => response.text())
+      .then(csvText => {
+        Papa.parse(csvText, {
+          header: true,
+          complete: (results) => {
+            const table = $('#csvTable').DataTable({
+              data: results.data,
+              columns: Object.keys(results.data[0]).map(key => ({ title: key, data: key }))
+            });
+          }
+        });
+      });
+  </script>
+</body>
+</html>
